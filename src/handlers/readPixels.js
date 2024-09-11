@@ -11,6 +11,4 @@ module.exports = async (knex, requestBody) => {
     }),
     syncTimestamp: outgoingSyncTime,
   };
-    
 };
-  
