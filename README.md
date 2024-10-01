@@ -1,110 +1,111 @@
-# Deployment Sprint
+# デプロイメントスプリント
 
-## Introduction
+## 背景
 
-You have created a communal image editor. Users can click on pixels to toggle them between black and white and also see the edits that other people have made in real time. However, you've created this web app locally on your machine. You have a *very* simple prototype working, but it's time to send your prototype to potential investors. Obviously you can't ask the investors to run your server locally on their own machines. You'd have to explain to them how to set up Node and Postgres! That won't do at all, no, no. We need to release our web app online where it is publicly accessible via a convenient URL.
+あなたは、共同利用型の画像編集ソフトを作成しました。ユーザーがピクセルをクリックして白黒を切り替えることができ、また他の人が行った編集をリアルタイムで見ることができるアプリです。今はまだあなたのマシン上でローカルに作成しています。シンプルなプロトタイプを動作させていますが、そろそろ投資家に見せる時期になってきました。Node とPostgres のセットアップ方法を説明して、彼らのマシン上でサーバーを実行して見てもらう、などということは到底無理ですので、Web アプリケーションをオンラインで公開し、便利な URL からアクセスしてもらうようにしなければいけません。
 
-## Objectives
+## 目的
 
-In this task, students will...
+このタスクの目標は...
 
-- Become familiar with deploying a project on Render
-- Understanding how configuration (database, ports, etc) work in a real production environment
-- How to include migrations and other setup as part of their deployment process.
+- Render 上でのプロジェクトのデプロイメントを学ぶ。
+- 実際の本番環境におけるデータベースやポートなどの設定の仕組みを理解する。
+- デプロイメントの一部としてマイグレーションやその他のセットアップをどのように行うかを学ぶ。
 
-### Basic Requirements
+### 基礎演習
 
-- [ ] First, verify that the program works.
-  - [ ] After cloning this repo, install the dependencies using `npm install`.
-  - [ ] This next part will require Postgres to be running locally on your machine. Please be sure to have a Postgres instance running and create a database called `ccpixels`.
-    > **Reminder**: The `psql` query to create a database is `CREATE DATABASE ccpixels;`.
-  - [ ] Run the migrations to get the database into a current state. This command can be found in the `scripts` section of `package.json`.
-    - The most common errors at this stage are database connection errors. If you are unable to run the migrations, make sure your Postgres is running and that the Postgres username and password match the configuration in `src/db/knexfile.js`.
-  - [ ] Run the seed data. The command for this can also be found in the `scripts` section of `package.json`.
-  - [ ] Launch the app using `node src/index.js` and visit it in your browser using `localhost` (the port can be found in `server.js`). What image do you see after running the seed data? If there is no image already displayed, then the seed data did not work. Play with the image editor for a while to see how the app should work and behave.
-- [ ] Set up a Render account:
-  - [ ] Go to [render.com](https://render.com) and follow the current instructions to set up an account. You do not need sign up for any plan that costs money to do this.
-    - Make sure to connect your Github account and grant access to your repositories.
-- [ ] Create a new web service:
-  - [ ] Go to the [Render dashboard](https://dashboard.render.com).
-  - [ ] Click the "New" button.
-  - [ ] Select "Web Service".
-  - [ ] Connect a Github repository and choose this repository from the list.
-    - If you don't see this repository as an option, configure your account to grant Github repository permissions to Render.
-  - [ ] For "Name" enter a unique name.
-  - [ ] Leave the root directory empty (defaults to root of this project).
-  - [ ] For the "Environment" choose "Node".
-  - [ ] For the "Region" choose the closest to your geographic location.
-  - [ ] For the "Branch" enter `master`.
-  - [ ] For the "Build Command" enter `npm run build`.
-  - [ ] For the "Start Command" enter `npm start`.
-    - This is the script that will run the server.
-  - [ ] Make sure the "Free" plan is selected. This plan will be valid for 90 days.
-  - [ ] Click the "Create Web Service" button.
-  - [ ] Before we deploy our application, we need to add `build` and `start` scripts to `package.json`
-  - [ ] Add `start` and `build` to the `package.json` "scripts":
+- [ ] まず、プログラムが動作することを確認します。
+
+  - [ ] このレポジトリをクローンした後、 `npm install` を使って必要なパッケージをインストールします。
+  - [ ] 次の作業では、あなたのマシン上で Postgres がローカルに動作していることが必要です。Postgres のインスタンスが走っていることを確認し、`ccpixels` というデータベースを作成してください。
+     > **ヒント**: データベースを作成するための `psql` クエリは `CREATE DATABASE ccpixels;` です。
+  - [ ] データベースを最新の状態にするためにマイグレーションを実行します。このコマンドは `package.json` の `scripts` セクションに記載されています。
+    - この段階での最も一般的なエラーは、データベース接続エラーです。マイグレーションが実行できない場合は、Postgres が起動していることと、Postgres のユーザー名とパスワードが `src/db/knexfile.js` にある設定と一致していることを確認してください。
+  - [ ] シードデータを実行します。このコマンドも `package.json` の `scripts` セクションに記載されています。 
+  - [ ] `node src/index.js` を使ってアプリを起動し、ブラウザで `localhost` (ポートは `server.js` に記載) を使ってアクセスします。シードデータを実行した後、どのような画像が表示されますか？もし、画像が表示されない場合は、シードデータが機能しなかったということです。また、イメージエディタを触ってみて、アプリがどのように動作するか、挙動を確認してみてください。
+- [ ] Renderのアカウントを取得する。
+  - [ ] [render.com](https://render.com) にアクセスし、最新の説明に従ってアカウントを設定してください。この際、有料プランにサインアップする必要はありません。
+
+    - Github のアカウントと接続し、リポジトリへのアクセスを許可してください。
+- [ ] 新しい Web サービスを作成します。
+  - [ ] [Render dashboard](https://dashboard.render.com) にアクセスします。
+
+  - [ ] "New" ボタンをクリックします。
+  - [ ] "Web Service" を選択します。
+  - [ ] Github のリポジトリに接続し、リストからこのリポジトリを選択します。
+    - このリポジトリが選択肢にない場合は、Github のリポジトリにアクセスする権限を Render に付与するようにアカウントを設定してください。
+  - [ ] "Name" は他で使っていない名前を入力します。
+  - [ ] ルートディレクトリは空のままにします。（デフォルトでこのプロジェクトのルートになります。）
+  - [ ] "Environment" は "Node" を選択します。
+  - [ ] "Region" は、あなたがいる場所に最も近いものを選択します。
+  - [ ] "Branch" には、`master`を入力します。
+- [ ] " Build Command" は `npm run build` を入力します。
+  - [ ] "Start Command" は `npm start` と入力します。
+    - これはサーバーを起動するスクリプトです。
+  - [ ] "Free"プランが選択されていることを確認します。このプランの有効期限は90日間です。
+  - [ ] "Create Web Service" ボタンをクリックします。
+  - [ ] アプリケーションをデプロイする前に、`build` と `start` スクリプトを `package.json` に追加する必要があります。
+  - [ ] `package.json` の "scripts" に `start` と `build` を追加します。
     ```json
       "scripts" {
           "build": "npm install",
-          "start": "node ./src/index.js",
+          "start": "node ./src/index.js"
+      }
     ```
+ 次にデータベースの設定を行います。
+- [ ] データベースを作成します。
+  - [ ] ダッシュボードで "New" をクリックし、今回は "PostgreSQL" を選択します。
+  - [ ] 一意の名前を付けます。（例：PixelsPostgres）
+  - [ ] データベースフィールドに `ccpixels` と入力します。
+  - [ ] "User" フィールドに覚えやすいユーザー名を入力します
+  - [ ] "Region" フィールドには、最も近いリージョンを選択します。
+  - [ ] "PostgreSQL version" を 14 に設定します。
+  - [ ] 他の設定はひとまず無視してください。
+  - [ ] "Free" プランが選択されていることを確認します。
+  - [ ] "Create Database" ボタンをクリックします。
+  - [ ] ダッシュボードに戻り、データベースのステータスが "Available" に変わるのを待ちます。
 
-Now we need to set up the database.
-- [ ] Create a Database:
-  - [ ] Go to the dashboard and click "New", but this time select "PostgreSQL".
-  - [ ] Give it a unique name (e.g. PixelsPostgres).
-  - [ ] For the database field enter `ccpixels`.
-  - [ ] For the "User" field, enter a user name that you will remember.
-  - [ ] For the "Region" field, choose a region that is closest to you.
-  - [ ] Set the "PostgreSQL version" to 14.
-  - [ ] Ignore the other settings for now.
-  - [ ] Make sure that the "Free" plan is selected.
-  - [ ] Click the "Create Database" button.
-  - [ ] Go back to the dashboard and wait for the database status to change to "Available".
+これで Node サーバーとデータベースが設定されました。次はそこと接続する必要があります。
+そのためには、Web サービスにデータベースへの接続方法を伝えるため、環境変数を設定する必要があります。
 
-You now have a node server and database deployed, but now you need to connect them.
-To do this we will have to set an environment variable to tell our web service how to connect to the database.
+- Render Web サービスに DATABASE_URL という環境変数を追加します。
+  - [ ] ダッシュボードから、作成した PostgreSQL データベースをクリックします。
+  - [ ] " Info" タブの "Connections" セクションから、"Internal Database URL" をコピーします。
+  - [ ] Render のダッシュボードに戻り、作成した Node の Web サービスをクリックします。
+  - [ ] "Environment" タブをクリックします。
+  - [ ] "Add Environment Variable"をクリックします。
+  - [ ] "Key"に "DATABASE_URL "を入力します。
+  - [ ] "Value" に先ほどコピーした "Internal Database URL"を貼り付けます。
+  - [ ] "Save Changes" をクリックします。
 
-- [ ] Add the DATABASE_URL environment variable to your Render web service.
-  - [ ] From the dashboard, click on the PostgreSQL database that you created.
-  - [ ] From the "Info" tab "Connections" sections, copy the "Internal Database URL".
-  - [ ] Go back to the Render dashboard and click on the Node web service you created.
-  - [ ] Click on the "Environment" tab.
-  - [ ] Click on "Add Environment Variable"
-  - [ ] For the "Key" enter "DATABASE_URL"
-  - [ ] For the "Value" paste the "Internal Database URL" copied earlier
-  - [ ] Click "Save Changes"
+- [ ] デプロイメントの準備をしましょう
+  - [ ] ソースコードで使用しているポート番号は標準的なものではなく、本番では動作しません。ポート番号は Render が選択してくれます。Render が提供するポート番号にどのようにアクセスし、使用するのでしょうか？ヒント: Nodeの `process.env` ドキュメントを調べてみてください。
+  - [ ] `src/db/knexfile.js` の設定が1つだけになっていますがこれは良くありません。knexfile は本番環境で動作しているかどうかによって、異なる設定を返す必要があります。このデータベース接続情報はどこから来るのでしょうか？この情報を使用するように knexfile を設定するにはどうしたらよいでしょうか？
+  - [ ] リリースがデプロイできるようになったらマイグレーションスクリプトを実行しなければいけません。この機能をどう追加すればよいでしょう。ヒント：マイグレーションスクリプトはビルドの過程で走らせたいですよね。
+  - [ ] ここまでブランチに加えた変更のコミットがまだなら、コミットしてください。
+- [ ] リモートリポジトリに `git push origin master`でコードをプッシュします。
+- [ ] Web サービスページの上部にある URL をクリックすると、デプロイされたアプリが表示されます。（`<あなたのアプリ名>.onrender.com`のような感じです。）
+  - 上手く行ったら、おめでとうございます！アプリは機能するでしょう。お疲れ様でした。
+    > うまくいきませんでしたか？ やるべき項目が沢山ですからね！うまくいってもいかなくても、どこを確認したらいいかを知っておきましょう。
+      - コードがデプロイされなかった場合は、git push したときにターミナル上でエラーが出ていなかったか確認します。
+      - Web サービスの `Logs` セクションをチェックし、エラーメッセージを読みましょう。
+      - エラーの原因として最も多いのは、データベースが正しく接続されていないことです。knex の設定にエラーがある場合は、マイグレーションを実行しようとすると`Logs`セクションに表示されます。
+      - データベースが動作していて、フロントエンドでエラーが発生した場合、ブラウザの開発者コンソールにエラーが表示されます。
+      - バックエンドに問題がある場合、VS Codeのデバッガでコードにブレークポイントを置くことができなくなるため、難しくなります。この場合、ログを使用する必要があります。
+  - [ ] ひとまず動作するようになったら新バージョンをリリースしてみましょう。Comic Sans はちょっと固い感じ（まぁラテン語だとオモシロクナイという意味になりますし...）なのでフロントエンドのフォントを変更しましょう。 コードをブランチにコミットし、先ほどの手順でRenderに再デプロイしてください。
 
-- [ ] Get ready to deploy!
-  - [ ] The port number we use in our source code was not very standard and will not work in production. Render will choose a port number for you. How do you access and use the Render-provided port number? Hint: Look into Node's `process.env` documentation.
-  - [ ] You'll notice there is only one configuration for `src/db/knexfile.js`. This is bad! The knexfile should return different configurations depending on whether you are running in production. Where does this the database connection information come from? How do you set the knexfile to use this information?
-  - [ ] The migrations script should be run when the release is ready to be deployed. How do you add this functionality? Hint: You probably want to run the migrations scripts during the build process.
-  - [ ] Commit all changes to your branch if you haven't already done so!
-- [ ] Push code to the remote repository:
-    `git push origin master`
-- [ ] Click on the URL at the top of the web service page to see the deployed app (it looks like `<your app name>.onrender.com`).
-  - If all went well, it should work. Good job!
-    > Oh no! It didn't work! (Or maybe it did). There's plenty of mistakes that can be made. Whether or not it works, it's good to know what all your options are.
-      - If the code did not deploy, check to see if there are any errors in the command line output of the git push.
-      - Check the `Logs` section of the web service and read the error messages.
-      - The most common cause of errors is the database not connecting properly. If there is an error in your knex config, it will show up here when it attempts to run the migrations.
-      - If your database is working and there's an error in the frontend, the error will appear in the developer console in your browser.
-      - If there is an issue in the backend, it becomes harder because you can no longer put a breakpoint on your code in VS Code's debugger. For this, you'll need to use logs.
-  - [ ] Now that everything is working, it's time to release a new version. Change the font of the frontend since Comic Sans is too serious (after all, "Comic Sans" is Latin for "not funny"). Commit your code to your branch and then Re-deploy this to Render following the steps from before.
+**重要**　Renderの無料枠には上限がありますのでこのスプリントが終わったら、作ったWebサービスとデータベースは必ず一時停止（suspend）してください！
 
+### 応用演習
 
-**IMPORTANT** The free-tier plan for Render has limitations on usage. Make sure you suspend the web service and database you created for this sprint when you are finished.
+Renderにデプロイされたアプリは投資家から好評を得ました。しかし、彼らは投資する前にもっと他の機能の実装も見たいと言っています。Renderへの再デプロイメントやマイグレーションでSQLスキーマを変更する練習に使ってください。
 
-### Advanced Requirements
+> この演習の目的はデプロイメントに慣れることです。以下は例えばこんな機能も考えられるとあげているだけですので、 SQL スキーマを変更するような内容であればこれに限らずやってみてください。
 
-The investors visited your Render-deployed app and loved it. However, they want to see some more features implemented before fully investing. Use this as practice for re-deploying on Render or changing the SQL schema using migrations.
+- [ ] 白と黒だけでなく、16色から選べるようにする。ピクセルのスキーマは現在ブーリアンになっていますが、数値に変更する必要があります
+- [ ] ボタンはいかにも2021年風です。もっと未来的なモノがほしい！そして、未来といえばやはり DOM Canvas でしょう。投資家はグリッドでボタンを作るより、直接クリックできる canvas に換えることを望んでいます。
+- [ ] ユーザーが1つのIPアドレスあたりに行えるピクセル変更の回数を1分間に1回に制限してください。これはクライアントではなく、サーバー側で制御しましょう。これで例えばユーザーが画像を編集するために複数のタブを開くことを防ぐことができます。おそらく最良のアプローチはユーザーのIPアドレスと変更を行った回数を記録する新しいテーブルを作成することです。
 
-> The real exercise here is getting comfortable with deploying. These are merely suggested features. Especially try to do things that would cause the SQL schema to change.
-
-- [ ] Add 16 colors to choose from instead of using only black and white. The schema for the pixels is currently a boolean. This will have to change to a number!
-- [ ] Buttons are very 2021. We want to look toward the future! And the future is filled with DOM Canvas. The investors want you to replace the button grid with a canvas that the user can click directly on.
-- [ ] Limit the number of pixel changes a user can make per IP to one pixel change per minute. This should be enforced by the server, not the client. This would prevent the user, for example, opening multiple tabs to edit the image. Probably the best way to do this is to create a new table that logs the user's IP and the time that they made the change.
-
-Additional Render features to explore:
-- [ ] How do you connect to the production database from the command line? This may be helpful to determine if a migration is failing or to check data.
-- [ ] Suppose your communal pixel editing app is becoming too overwhelmed from all the traffic. How do you allocate more resources from Render so that it can scale?
+その他、探索してみたい Render 機能
+- [ ] コマンドラインから本番データベースに接続する方法は？これは、マイグレーションが失敗しているかどうかを判断したり、データをチェックしたりするのに使えるかもしれません。
+- [ ] この共同ピクセル編集アプリがトラフィックによって過負荷になっているとしたら、Render からより多くのリソースを割り当てて、スケールできるようにするにはどうしたらよいでしょう？
