@@ -18,9 +18,9 @@ module.exports = {
     ssl: {
       rejectUnauthorized: false,
     },
-    // migrations: {
-    //   directory: path.resolve(__dirname, './data/migrations'),
-    // },
-    // seeds: { directory: path.resolve(__dirname, './data/seeds') },
+    migrations: {
+      directory: path.resolve(__dirname, './data/migrations'),
+    },
+    seeds: { directory: path.resolve(__dirname, './data/seeds') },
   },
 };
