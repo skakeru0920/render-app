@@ -8,8 +8,8 @@
     "migrate-latest": "npx knex migrate:latest --knexfile src/db/knexfile.js",
     "migrate-down": "npx knex migrate:down --knexfile src/db/knexfile.js",
     "seed-data": "npx knex seed:run --knexfile src/db/knexfile.js",
-    "build": "npm install && npm run migrate-latest && npm run seed-data",
-    "start": "node ./src/index.js"
+    "build": "npm install",
+    "start": "npm run migrate-latest && npm run seed-data && node ./src/index.js"
   },
   "author": "",
   "license": "ISC",
