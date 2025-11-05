@@ -4,4 +4,5 @@ console.log(process.env.DATABASE_URL, 'url');
 const environment = process.env.DATABASE_URL ? 'production' : 'development';
 console.log(environment, 'this is settings');
 
-module.exports = knex(knexConfig[environment]);
+module.exports = knex(knexConfig);
+// module.exports = knex(knexConfig[environment]);
