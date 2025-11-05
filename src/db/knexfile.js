@@ -18,7 +18,8 @@ module.exports = {
       rejectUnauthorized: false,
     },
     migrations: {
-      directory: './data/migrations',
+      directory: path.resolve(__dirname, './data/migrations'),
     },
+    seeds: { directory: path.resolve(__dirname, './data/seeds') },
   },
 };
